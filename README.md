@@ -37,6 +37,8 @@ This repository includes both web and Android app development components, and it
 - **SOP Writing Assistance**: Guidance on writing the Statement of Purpose.
 - **LOR Help**: Help with writing Letters of Recommendation.
 - **I-20 Form Assistance**: Step-by-step guidance for completing the I-20 form.
+- **Professional Resume/CV Preparation**: We provide professional resume and CV preparation services, helping students craft a polished and impactful resume for their university applications and job searches.
+- **Visa Interview Preparation**: We help students prepare for their visa interviews with expert guidance, mock interviews, and tips to boost confidence and improve their chances of success.
 
 ### 4. **Mentorship**
 - **One-on-One Mentorship**: Students can book mentorship sessions via integrated Zoom or Google Meet.
