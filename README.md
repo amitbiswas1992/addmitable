@@ -1,4 +1,4 @@
-## Student Portal App
+## Student Portal App MVP Feature List 
 
 ### Overview
 
@@ -158,48 +158,287 @@ The Android app for this platform will allow students and agents to access all k
 
 
 
-# Backend API Documentation - Student Portal App
-
-## Overview
-
-This document provides the API documentation for the **Student Portal App**, which is designed to assist students in their university admissions journey. This API handles various functionalities such as user registration, document preparation, mentorship scheduling, payment processing, reward points, and more.
-
 The API supports **RESTful** principles and uses **JWT authentication** for secure access to protected endpoints.
 
 ---
 
+# Student Portal API Documentation
+
+This document provides a comprehensive guide to the API endpoints for the Student Portal app. The portal offers various services for students, such as document preparation, mentorship, payment processing, reward points, and scholarship information.
+
 ## Table of Contents
+1. [User Management](#user-management)
+2. [Document Preparation Services](#document-preparation-services)
+3. [Mentorship](#mentorship)
+4. [Payment System](#payment-system)
+5. [Reward Points System](#reward-points-system)
+6. [Scholarship and Funding Information](#scholarship-and-funding-information)
+7. [Search Functionality](#search-functionality)
+8. [Authentication](#authentication)
+9. [Error Handling](#error-handling)
+10. [Contributing](#contributing)
 
-- [Authentication](#authentication)
-- [User Management](#user-management)
-- [Document Preparation Services](#document-preparation-services)
-- [Mentorship](#mentorship)
-- [Payment System](#payment-system)
-- [Reward Points System](#reward-points-system)
-- [Scholarship and Funding Information](#scholarship-and-funding-information)
-- [Search Functionality](#search-functionality)
-- [Error Handling](#error-handling)
+## User Management
 
----
+### 1. User Registration
+- **Endpoint**: `POST /api/users/register`
+- **Request Body**:
+    ```json
+    {
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "student@example.com",
+      "password": "password123",
+      "role": "student"
+    }
+    ```
+- **Response**:
+    ```json
+    {
+      "message": "User registered successfully",
+      "user_id": "12345"
+    }
+    ```
+- **Description**: Registers a new user (student or agent). Returns a success message and user ID.
+
+## Document Preparation Services
+
+### 2. Get Document Templates
+- **Endpoint**: `GET /api/docs/templates`
+- **Response**:
+    ```json
+    [
+      {
+        "type": "SOP",
+        "template_url": "https://example.com/sop-template"
+      },
+      {
+        "type": "LOR",
+        "template_url": "https://example.com/lor-template"
+      }
+    ]
+    ```
+- **Description**: Retrieves available document templates (e.g., SOP, LOR). Students can use these templates to prepare their documents.
+
+### 3. Submit Document for Review
+- **Endpoint**: `POST /api/docs/submit`
+- **Request Body**:
+    ```json
+    {
+      "user_id": "12345",
+      "document_type": "SOP",
+      "document_file": "file_base64_content"
+    }
+    ```
+- **Response**:
+    ```json
+    {
+      "message": "Document submitted successfully for review",
+      "status": "under_review"
+    }
+    ```
+- **Description**: Submits a document for review by mentors. Returns a success message along with the review status.
+
+## Mentorship
+
+### 4. Schedule Mentorship Session
+- **Endpoint**: `POST /api/mentorship/schedule`
+- **Request Body**:
+    ```json
+    {
+      "student_id": "12345",
+      "mentor_id": "67890",
+      "session_date": "2025-02-15T10:00:00",
+      "platform": "Zoom"
+    }
+    ```
+- **Response**:
+    ```json
+    {
+      "message": "Mentorship session scheduled successfully",
+      "session_id": "98765"
+    }
+    ```
+- **Description**: Schedules a mentorship session between a student and a mentor. Returns a success message and session ID.
+
+## Payment System
+
+### 5. Make Payment for Service
+- **Endpoint**: `POST /api/payment/charge`
+- **Request Body**:
+    ```json
+    {
+      "user_id": "12345",
+      "service_type": "Document Preparation",
+      "amount": 100,
+      "payment_method": "credit_card"
+    }
+    ```
+- **Response**:
+    ```json
+    {
+      "message": "Payment processed successfully",
+      "transaction_id": "tx1234567890"
+    }
+    ```
+- **Description**: Processes payment for a selected service (e.g., document preparation). Returns a success message along with the transaction ID.
+
+## Reward Points System
+
+### 6. Earn Reward Points
+- **Endpoint**: `POST /api/points/earn`
+- **Request Body**:
+    ```json
+    {
+      "user_id": "12345",
+      "points": 100,
+      "reason": "Service Purchase"
+    }
+    ```
+- **Response**:
+    ```json
+    {
+      "message": "Points earned successfully",
+      "total_points": 150
+    }
+    ```
+- **Description**: Awards reward points to a student after completing a specific action (e.g., service purchase). Returns the updated points balance.
+
+### 7. Redeem Reward Points
+- **Endpoint**: `POST /api/points/redeem`
+- **Request Body**:
+    ```json
+    {
+      "user_id": "12345",
+      "points": 50,
+      "service_type": "Discount on Service"
+    }
+    ```
+- **Response**:
+    ```json
+    {
+      "message": "Points redeemed successfully",
+      "discount_amount": 5
+    }
+    ```
+- **Description**: Redeems reward points for discounts on services. Returns the amount of discount applied.
+
+## Scholarship and Funding Information
+
+### 8. Get Scholarship Information
+- **Endpoint**: `GET /api/scholarships`
+- **Response**:
+    ```json
+    [
+      {
+        "scholarship_name": "Fulbright Scholarship",
+        "amount": "Full tuition",
+        "eligibility": "Graduate students"
+      },
+      {
+        "scholarship_name": "DAAD Scholarship",
+        "amount": "$10,000",
+        "eligibility": "International students"
+      }
+    ]
+    ```
+- **Description**: Retrieves available scholarships and their details (e.g., eligibility, amount).
+
+### 9. Get Funding Opportunities
+- **Endpoint**: `GET /api/funding`
+- **Response**:
+    ```json
+    [
+      {
+        "funding_name": "Research Grant",
+        "amount": "$20,000",
+        "eligibility": "PhD students"
+      }
+    ]
+    ```
+- **Description**: Retrieves funding opportunities for students based on their field of study.
+
+## Search Functionality
+
+### 10. Search Scholarships and Funding by Department
+- **Endpoint**: `GET /api/search/scholarships-funding`
+- **Query Parameters**:
+    ```text
+    ?department=computer_science
+    ```
+- **Response**:
+    ```json
+    [
+      {
+        "scholarship_name": "CS Excellence Award",
+        "amount": "$5,000"
+      }
+    ]
+    ```
+- **Description**: Searches for scholarships and funding opportunities based on the student's department (e.g., Computer Science).
+
+### 11. Search for Professors by Department
+- **Endpoint**: `GET /api/search/professors`
+- **Query Parameters**:
+    ```text
+    ?department=biology
+    ```
+- **Response**:
+    ```json
+    [
+      {
+        "professor_name": "Dr. Jane Smith",
+        "research_area": "Genomics",
+        "accepting_students": true
+      }
+    ]
+    ```
+- **Description**: Searches for professors in a specific department who are currently accepting students into their labs.
+
+### 12. LinkedIn Scraping for Professor Posts
+- **Endpoint**: `GET /api/search/linkedin`
+- **Query Parameters**:
+    ```text
+    ?professor_name=John_Doe
+    ```
+- **Response**:
+    ```json
+    {
+      "post": "Dr. John Doe is now accepting students for his lab in AI research. Apply now!"
+    }
+    ```
+- **Description**: Scrapes LinkedIn for real-time updates about professors, such as whether they are accepting students or sharing opportunities.
 
 ## Authentication
 
 ### 1. **Login**
+- **Endpoint**: `POST /api/auth/login`
+- **Request Body**:
+    ```json
+    {
+      "email": "student@example.com",
+      "password": "password123"
+    }
+    ```
+- **Response**:
+    ```json
+    {
+      "token": "JWT_TOKEN",
+      "expires_in": "3600"
+    }
+    ```
+- **Description**: Authenticates a user by their email and password, returning a JWT token for further API requests and the expiration time of the token.
 
-**Endpoint:** `POST /api/auth/login`
+## Error Handling
 
-**Request Body:**
+All API responses include an appropriate HTTP status code (e.g., 200 for success, 400 for bad request) and a descriptive message for errors.
+
+Example Error Response:
 ```json
 {
-  "email": "student@example.com",
-  "password": "password123"
+  "status": "error",
+  "message": "Invalid user credentials"
 }
 
-**Response:**
-```
-{
-  "token": "JWT_TOKEN",
-  "expires_in": "3600"
-}
-```
+
 
